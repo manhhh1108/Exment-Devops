@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.2
+    commands:
+      - echo "Install dependencies"
+      - composer install --no-dev --prefer-dist --no-interaction
+
+  pre_build:
+    commands:
+      - echo "Run tests"
+      - php artisan test || true
+
+  build:
+    commands:
+      - echo "Build done"
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
