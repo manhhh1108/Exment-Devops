@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "exceedone/exment": "6.2.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
@@ -57,6 +58,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "kylekatarnls/update-helper": false,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
