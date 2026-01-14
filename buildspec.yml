@@ -5,13 +5,17 @@ phases:
     runtime-versions:
       php: 8.2
     commands:
-      - apt-get update
-      - apt-get install -y libsodium-dev
+      - echo "Install PHP sodium extension (Amazon Linux)"
+
+      - yum update -y
+      - yum install -y libsodium libsodium-devel
+
       - pecl install sodium || true
-      - echo "extension=sodium" >> $(php --ini | grep "Loaded Configuration" | awk '{print $4}')
+      - echo "extension=sodium" > /root/.phpenv/versions/8.2.29/etc/conf.d/sodium.ini
+
       - php -m | grep sodium
 
-      - echo "Install dependencies"
+      - echo "Install PHP dependencies"
       - composer install --no-dev --prefer-dist --no-interaction
 
   pre_build:
