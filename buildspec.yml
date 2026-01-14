@@ -9,22 +9,22 @@ phases:
       - composer install --no-dev --prefer-dist --no-interaction
 
   pre_build:
-    commands:
-      - echo "Detect version info"
+  commands:
+    - echo "Detect version info"
 
-      # Lấy Git tag (chỉ hợp lệ khi build từ tag)
-      - GIT_TAG=$(git describe --tags --exact-match 2>/dev/null || echo "no-tag")
+    # Git commit (AWS inject)
+    - GIT_COMMIT=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:7}
 
-      # Lấy commit hash
-      - GIT_COMMIT=$(git rev-parse --short HEAD)
+    # Git tag (nếu build từ tag thì CodePipeline đã biết)
+    - GIT_TAG=${CODEBUILD_SOURCE_VERSION:-no-tag}
 
-      # Pipeline / Build metadata (CodePipeline inject)
-      - PIPELINE_NAME=${CODEPIPELINE_PIPELINE_NAME:-manual}
-      - PIPELINE_EXECUTION_ID=${CODEPIPELINE_EXECUTION_ID:-manual}
-      - BUILD_ID=$CODEBUILD_BUILD_ID
+    # Pipeline metadata
+    - PIPELINE_NAME=${CODEPIPELINE_PIPELINE_NAME:-manual}
+    - PIPELINE_EXECUTION_ID=${CODEPIPELINE_EXECUTION_ID:-manual}
+    - BUILD_ID=$CODEBUILD_BUILD_ID
 
-      - echo "Run tests"
-      - php artisan test || true
+    - echo "Run tests"
+    - php artisan test || true
 
   build:
     commands:
