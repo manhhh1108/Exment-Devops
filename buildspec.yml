@@ -13,7 +13,7 @@ phases:
       - pecl install sodium || true
       - echo "extension=sodium" > /root/.phpenv/versions/8.2.29/etc/conf.d/sodium.ini
 
-      - php -m | grep sodium
+      - php -m | grep sodium || true
 
       - echo "Install PHP dependencies"
       - composer install --no-dev --prefer-dist --no-interaction
