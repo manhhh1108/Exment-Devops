@@ -5,16 +5,7 @@ phases:
     runtime-versions:
       php: 8.2
     commands:
-      - echo "Install PHP sodium extension (official way)"
-
-      # install php sodium extension
-      - yum update -y
-      - yum install -y php-sodium
-
-      # verify
-      - php -m | grep sodium || echo "sodium loaded"
-
-      - echo "Install PHP dependencies"
+      - echo "Install dependencies"
       - composer install --no-dev --prefer-dist --no-interaction
 
   pre_build:
