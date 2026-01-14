@@ -5,6 +5,12 @@ phases:
     runtime-versions:
       php: 8.2
     commands:
+      - apt-get update
+      - apt-get install -y libsodium-dev
+      - pecl install sodium || true
+      - echo "extension=sodium" >> $(php --ini | grep "Loaded Configuration" | awk '{print $4}')
+      - php -m | grep sodium
+
       - echo "Install dependencies"
       - composer install --no-dev --prefer-dist --no-interaction
 
