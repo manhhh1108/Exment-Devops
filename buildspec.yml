@@ -22,17 +22,15 @@ phases:
   build:
     commands:
       - echo "Generate VERSION file"
-      - echo "APP_NAME=exment" > VERSION
-      - echo "ENV=PROD" >> VERSION
-      - echo "" >> VERSION
-      - echo "VERSION=$GIT_TAG" >> VERSION
-      - echo "GIT_TAG=$GIT_TAG" >> VERSION
-      - echo "GIT_COMMIT=$GIT_COMMIT" >> VERSION
-      - echo "" >> VERSION
-      - echo "PIPELINE_NAME=$PIPELINE_NAME" >> VERSION
-      - echo "PIPELINE_EXECUTION_ID=$PIPELINE_EXECUTION_ID" >> VERSION
-      - echo "BUILD_ID=$BUILD_ID" >> VERSION
-      - echo "DEPLOYED_AT=$(date '+%Y-%m-%d %H:%M:%S')" >> VERSION
+      - echo "APP_NAME=exment" > $CODEBUILD_SRC_DIR/VERSION
+      - echo "ENV=PROD" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "VERSION=$GIT_TAG" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "GIT_TAG=$GIT_TAG" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "GIT_COMMIT=$GIT_COMMIT" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "PIPELINE_NAME=$PIPELINE_NAME" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "PIPELINE_EXECUTION_ID=$PIPELINE_EXECUTION_ID" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "BUILD_ID=$BUILD_ID" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "DEPLOYED_AT=$(date '+%Y-%m-%d %H:%M:%S')" >> $CODEBUILD_SRC_DIR/VERSION
       - chmod +x scripts/*.sh
       - echo "Build done"
 
