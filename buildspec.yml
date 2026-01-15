@@ -3,7 +3,6 @@ version: 0.2
 env:
   exported-variables:
     - APP_VERSION
-    - COMMIT_SHA
 
 phases:
   install:
@@ -15,24 +14,15 @@ phases:
 
   pre_build:
     commands:
-      - echo "Detect version from Git tag"
-      - export APP_VERSION=${CODEBUILD_SOURCE_VERSION}
-      - export COMMIT_SHA=$(git rev-parse HEAD)
-      - echo "APP_VERSION=$APP_VERSION"
-      - echo "COMMIT_SHA=$COMMIT_SHA"
-
+      - echo "Build version: $APP_VERSION"
       - echo "Run tests"
       - php artisan test || true
 
   build:
     commands:
-      - echo "Build version $APP_VERSION"
+      - echo "Build done for version $APP_VERSION"
       - chmod +x scripts/*.sh
       - echo "Build done"
-
-  post_build:
-    commands:
-      - echo "Packaging artifact for $APP_VERSION"
 
 artifacts:
   name: app-${APP_VERSION}
