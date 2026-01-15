@@ -2,8 +2,8 @@ name: prod-to-codecommit
 
 on:
   push:
-    tags:
-      - 'prod-*'
+    # tags:
+    #   - 'prod-*'
 
 permissions:
   id-token: write
@@ -39,11 +39,8 @@ jobs:
         run: |
           git remote remove codecommit || true
           git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/deploy-test
-          git push codecommit HEAD:main --force
-          git push codecommit --tags
 
-
-
-
-
-
+      - name: Push commit + tag to CodeCommit (SAFE)
+        run: |
+          echo "Pushing tag and its commit to CodeCommit"
+          git push codecommit refs/tags/${GITHUB_REF_NAME}
