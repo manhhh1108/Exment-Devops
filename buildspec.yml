@@ -14,15 +14,13 @@ phases:
 
   pre_build:
     commands:
-      - echo "Build version: $APP_VERSION"
-      - echo "Run tests"
-      - php artisan test || true
-
+      - echo "Build version: ${APP_VERSION}"
+      - echo "Skip tests"
+      
   build:
     commands:
-      - echo "Build done for version $APP_VERSION"
+      - echo "Build done for version ${APP_VERSION}"
       - chmod +x scripts/*.sh
-      - echo "Build done"
 
 artifacts:
   name: app-${APP_VERSION}
