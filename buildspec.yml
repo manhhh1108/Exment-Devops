@@ -1,9 +1,5 @@
 version: 0.2
 
-env:
-  exported-variables:
-    - APP_VERSION
-
 phases:
   install:
     runtime-versions:
@@ -14,16 +10,16 @@ phases:
 
   pre_build:
     commands:
-      - echo "Build version: ${APP_VERSION}"
-      - echo "tests "
-      
+      - echo "Run tests"
+      - php artisan test || true
+
   build:
     commands:
-      - echo "Build done for version ${APP_VERSION}"
+      - echo "Set execute permission for scripts"
       - chmod +x scripts/*.sh
+      - echo "Build done"
 
 artifacts:
-  name: app-${APP_VERSION}
   files:
     - '**/*'
   discard-paths: no
