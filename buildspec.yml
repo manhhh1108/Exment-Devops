@@ -19,6 +19,7 @@ phases:
       - chmod +x scripts/*.sh
       - echo "Build done"
       - echo "Build completed on $(date)"
+      - echo "!!!"
 
 artifacts:
   files:
