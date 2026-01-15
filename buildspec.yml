@@ -10,27 +10,12 @@ phases:
 
   pre_build:
     commands:
-      - echo "Detect version info"
-      - GIT_COMMIT=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:7}
-      - GIT_TAG=${CODEBUILD_SOURCE_VERSION:-no-tag}
-      - PIPELINE_NAME=${CODEPIPELINE_PIPELINE_NAME:-manual}
-      - PIPELINE_EXECUTION_ID=${CODEPIPELINE_EXECUTION_ID:-manual}
-      - BUILD_ID=$CODEBUILD_BUILD_ID
       - echo "Run tests"
       - php artisan test || true
 
   build:
     commands:
-      - echo "Generate VERSION file"
-      - echo "APP_NAME=exment" > $CODEBUILD_SRC_DIR/VERSION
-      - echo "ENV=PROD" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "VERSION=$GIT_TAG" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "GIT_TAG=$GIT_TAG" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "GIT_COMMIT=$GIT_COMMIT" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "PIPELINE_NAME=$PIPELINE_NAME" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "PIPELINE_EXECUTION_ID=$PIPELINE_EXECUTION_ID" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "BUILD_ID=$BUILD_ID" >> $CODEBUILD_SRC_DIR/VERSION
-      - echo "DEPLOYED_AT=$(date '+%Y-%m-%d %H:%M:%S')" >> $CODEBUILD_SRC_DIR/VERSION
+      - echo "Set execute permission for scripts"
       - chmod +x scripts/*.sh
       - echo "Build done"
 
