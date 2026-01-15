@@ -2,8 +2,8 @@ name: prod-to-codecommit
 
 on:
   push:
-    # tags:
-    #   - 'prod-*'
+    tags:
+      - 'prod-*'
 
 permissions:
   id-token: write
