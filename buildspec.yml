@@ -15,7 +15,7 @@ phases:
   pre_build:
     commands:
       - echo "Build version: ${APP_VERSION}"
-      - echo "Skip tests"
+      - echo "tests"
       
   build:
     commands:
