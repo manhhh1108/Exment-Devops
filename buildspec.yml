@@ -19,7 +19,7 @@ phases:
       - echo "Set execute permission for scripts"
       - chmod +x scripts/*.sh
       - echo "Build done"
-
+ 
 artifacts:
   files:
     - '**/*'
