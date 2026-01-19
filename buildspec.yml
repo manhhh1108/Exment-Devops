@@ -6,6 +6,7 @@ phases:
       php: 8.2
     commands:
       - echo "Install dependencies"
+      - echo "test"
       - composer install --no-dev --prefer-dist --no-interaction
 
   pre_build:
