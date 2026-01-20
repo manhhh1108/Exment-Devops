@@ -41,14 +41,22 @@ jobs:
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Fetch CodeCommit main
+        run: |
+          git remote remove codecommit || true
+          git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/deploy-test
+          git fetch codecommit main
+
       - name: Commit release tag to source
         run: |
           git add .release-tag
           git commit -m "chore(release): $RELEASE_TAG"
 
+      - name: Rebase on CodeCommit main
+        run: |
+          git rebase codecommit/main
+
       - name: Push to CodeCommit
         run: |
-          git remote remove codecommit || true
-          git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/deploy-test
           git push codecommit HEAD:main
           git push codecommit "$RELEASE_TAG"
