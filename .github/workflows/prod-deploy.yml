@@ -19,20 +19,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create release tag file
-        run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
-          echo "$TAG_NAME" > .release-tag
-          echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::113624067602:role/GitHubActions-CodeCommit-Role
           aws-region: ap-northeast-1
-
-      - name: Verify AWS identity
-        run: aws sts get-caller-identity
 
       - name: Configure git for CodeCommit
         run: |
@@ -47,14 +38,20 @@ jobs:
           git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/deploy-test
           git fetch codecommit main
 
-      - name: Commit release tag to source
-        run: |
-          git add .release-tag
-          git commit -m "chore(release): $RELEASE_TAG"
-
       - name: Rebase on CodeCommit main
         run: |
           git rebase codecommit/main
+
+      - name: Create release tag file
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "$TAG_NAME" > .release-tag
+          echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Commit release tag
+        run: |
+          git add .release-tag
+          git commit -m "chore(release): $RELEASE_TAG"
 
       - name: Push to CodeCommit
         run: |
