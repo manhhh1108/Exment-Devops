@@ -6,7 +6,6 @@ phases:
       php: 8.2
     commands:
       - echo "Install dependencies"
-      - echo "test"
       - composer install --no-dev --prefer-dist --no-interaction
 
   pre_build:
@@ -14,13 +13,22 @@ phases:
       - echo "Run tests"
       - php artisan test || true
 
+      - echo "SOURCE_VERSION=$CODEBUILD_SOURCE_VERSION"
+      - VERSION=${CODEBUILD_SOURCE_VERSION#refs/tags/}
+      - COMMIT_SHA=$CODEBUILD_RESOLVED_SOURCE_VERSION
+
+      - echo "VERSION=$VERSION" > version.env
+      - echo "COMMIT_SHA=$COMMIT_SHA" >> version.env
+      - echo "BUILD_TIME=$(date -u)" >> version.env
+
   build:
     commands:
       - echo "Set execute permission for scripts"
       - chmod +x scripts/*.sh
-      - echo "Build done"
- 
+      - echo "Build done for version $VERSION"
+
 artifacts:
+  name: build-$VERSION
   files:
     - '**/*'
   discard-paths: no
