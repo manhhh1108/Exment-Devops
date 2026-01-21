@@ -14,10 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4 
+      - name: Checkout exact tag commit
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }}
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
@@ -32,15 +33,10 @@ jobs:
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Actions"
 
-      - name: Fetch CodeCommit main
+      - name: Add CodeCommit remote
         run: |
           git remote remove codecommit || true
           git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/deploy-test
-          git fetch codecommit main
-
-      - name: Rebase on CodeCommit main
-        run: |
-          git rebase codecommit/main
 
       - name: Create release tag file
         run: |
@@ -56,4 +52,10 @@ jobs:
       - name: Push to CodeCommit
         run: |
           git push codecommit HEAD:main
-          git push codecommit "$RELEASE_TAG"
+
+          # chỉ push tag nếu CodeCommit chưa có
+          if ! git ls-remote --tags codecommit | grep -q "refs/tags/$RELEASE_TAG"; then
+            git push codecommit "$RELEASE_TAG"
+          else
+            echo "Tag $RELEASE_TAG already exists on CodeCommit, skip pushing tag"
+          fi
