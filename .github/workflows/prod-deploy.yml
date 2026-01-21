@@ -49,11 +49,8 @@ jobs:
           git add .release-tag
           git commit -m "chore(release): $RELEASE_TAG"
 
-      - name: Push to CodeCommit
+      - name: Push tag to CodeCommit (NO main)
         run: |
-          git push codecommit HEAD:main
-
-          # chỉ push tag nếu CodeCommit chưa có
           if ! git ls-remote --tags codecommit | grep -q "refs/tags/$RELEASE_TAG"; then
             git push codecommit "$RELEASE_TAG"
           else
